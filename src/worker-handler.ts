@@ -8,7 +8,6 @@ export class WorkerHandler {
   syncCallback: SyncCallback;
   currentWindow = getCurrentWindowState();
   worker: SharedWorker;
-  windows: Window[] = [];
 
   constructor() {
     this.worker = new SharedWorker(new URL("worker.ts", import.meta.url));
@@ -28,8 +27,7 @@ export class WorkerHandler {
       switch (message.action) {
         case "sync":
           this.currentWindow = getCurrentWindowState();
-          this.windows = message.payload.allWindows;
-          this.syncCallback(this.windows);
+          this.syncCallback(message.payload.allWindows);
           break;
         default:
           break;

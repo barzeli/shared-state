@@ -27,8 +27,8 @@ const main = () => {
   setInterval(() => {
     const newState = getCurrentWindowState();
     if (didWindowChange(workerHandler.currentWindow, newState)) {
-      workerHandler.onWindowStateChange(newState);
       workerHandler.currentWindow = newState;
+      workerHandler.onWindowStateChange(newState);
     }
   }, 100);
 };
