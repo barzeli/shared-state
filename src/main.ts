@@ -27,6 +27,8 @@ const main = () => {
   setInterval(() => {
     const newState = getCurrentWindowState();
     if (didWindowChange(workerHandler.currentWindow, newState)) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
       workerHandler.currentWindow = newState;
       workerHandler.onWindowStateChange(newState);
     }
