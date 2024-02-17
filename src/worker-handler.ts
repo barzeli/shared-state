@@ -1,8 +1,8 @@
-import { WindowState } from "./types/window-state.types";
-import { SyncCallback, WorkerMessage } from "./types/worker.types";
+import { Window, WindowState } from "./types/window-state.types";
+import { WorkerMessage } from "./types/worker.types";
 
 export class WorkerHandler {
-  syncCallback: SyncCallback;
+  syncCallback: (windows: Window[]) => void;
   worker: SharedWorker;
 
   constructor(id: string, windowState: WindowState) {

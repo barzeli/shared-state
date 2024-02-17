@@ -10,5 +10,3 @@ export type WorkerMessage =
   | Message<"stateChanged", { changedWindow: Window }>
   | Message<"sync", { allWindows: Window[] }>
   | Message<"closed", { id: string }>;
-
-export type SyncCallback = (allWindows: Window[]) => void;

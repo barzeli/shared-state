@@ -1,13 +1,12 @@
 import { v4 as uuid } from "uuid";
 
-import {
-  drawCenterCircle,
-  preprareDrawConnectingLine,
-} from "./utils/drawing.utils";
+import { drawCenterCircle, drawConnectingLine } from "./utils/drawing.utils";
 import {
   didWindowChange,
   getCurrentWindowState,
+  getTargetCenterRelativeToOrigin,
   getWindowCenter,
+  getWindowOffset,
 } from "./utils/window-state.utils";
 import { WorkerHandler } from "./worker-handler";
 
@@ -27,7 +26,17 @@ const main = () => {
     windows
       .filter(({ id }) => id !== windowId)
       .forEach(({ windowState }) => {
-        preprareDrawConnectingLine(ctx, currentWindowState, windowState);
+        const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
+          getWindowOffset(currentWindowState),
+          getWindowOffset(windowState),
+          getWindowCenter(windowState)
+        );
+
+        drawConnectingLine(
+          ctx,
+          getWindowCenter(currentWindowState),
+          targetCenterRelativeToOrigin
+        );
       });
   };
 

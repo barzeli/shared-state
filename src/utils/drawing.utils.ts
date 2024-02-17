@@ -1,9 +1,4 @@
-import { Coordinate, WindowState } from "../types/window-state.types";
-import {
-  getTargetCenterRelativeToOrigin,
-  getWindowCenter,
-  getWindowOffset,
-} from "./window-state.utils";
+import { Coordinate } from "../types/window-state.types";
 
 export const drawCenterCircle = (
   ctx: CanvasRenderingContext2D,
@@ -15,23 +10,6 @@ export const drawCenterCircle = (
   ctx.arc(center.x, center.y, 100, 0, Math.PI * 2, false);
   ctx.stroke();
   ctx.closePath();
-};
-
-export const preprareDrawConnectingLine = (
-  ctx: CanvasRenderingContext2D,
-  currentWindowState: WindowState,
-  targetWindowState: WindowState
-) => {
-  const originCenter = getWindowCenter(currentWindowState);
-  const targetCenter = getWindowCenter(targetWindowState);
-
-  const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
-    getWindowOffset(currentWindowState),
-    getWindowOffset(targetWindowState),
-    targetCenter
-  );
-
-  drawConnectingLine(ctx, originCenter, targetCenterRelativeToOrigin);
 };
 
 export const drawConnectingLine = (
