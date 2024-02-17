@@ -32,6 +32,7 @@ const main = () => {
           getWindowCenter(windowState)
         );
 
+        drawCenterCircle(ctx, targetCenterRelativeToOrigin);
         drawConnectingLine(
           ctx,
           getWindowCenter(currentWindowState),
