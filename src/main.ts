@@ -25,13 +25,14 @@ const main = () => {
     drawCenterCircle(ctx, getWindowCenter(currentWindowState));
     windows
       .filter(({ id }) => id !== windowId)
-      .forEach(({ windowState }) => {
-        const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
+      .map(({ windowState }) =>
+        getTargetCenterRelativeToOrigin(
           getWindowOffset(currentWindowState),
           getWindowOffset(windowState),
           getWindowCenter(windowState)
-        );
-
+        )
+      )
+      .forEach((targetCenterRelativeToOrigin) => {
         drawCenterCircle(ctx, targetCenterRelativeToOrigin);
         drawConnectingLine(
           ctx,
