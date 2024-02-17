@@ -34,10 +34,8 @@ export const getTargetCenterRelativeToOrigin = (
     y: targetWindowOffset.y + targetCenter.y,
   };
 
-  const targetCenterRelativeToOrigin = {
+  return {
     x: targetAbsoluteCenter.x - currentWindowOffset.x,
     y: targetAbsoluteCenter.y - currentWindowOffset.y,
   };
-
-  return targetCenterRelativeToOrigin;
 };
