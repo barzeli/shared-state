@@ -3,14 +3,14 @@ import { Coordinates, WindowState } from "../types/window-state.types";
 export const didWindowChange = (
   currentState: WindowState,
   newState: WindowState
-) => {
-  return (
+) => ({
+  positionChanged:
     newState.screenX !== currentState.screenX ||
-    newState.screenY !== currentState.screenY ||
+    newState.screenY !== currentState.screenY,
+  sizeChanged:
     newState.width !== currentState.width ||
-    newState.height !== currentState.height
-  );
-};
+    newState.height !== currentState.height,
+});
 
 export const getTargetCenterRelativeToOrigin = ({
   currentWindowOffset,
