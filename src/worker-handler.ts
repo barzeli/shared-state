@@ -1,23 +1,19 @@
-import { v4 as uuid } from "uuid";
 import { WindowState } from "./types/window-state.types";
-import { getCurrentWindowState } from "./utils/window-state.utils";
 import { SyncCallback, WorkerMessage } from "./types/worker.types";
 
 export class WorkerHandler {
-  id = uuid();
   syncCallback: SyncCallback;
-  currentWindowState = getCurrentWindowState();
   worker: SharedWorker;
 
-  constructor() {
+  constructor(id: string, windowState: WindowState) {
     this.worker = new SharedWorker(new URL("worker.ts", import.meta.url));
 
     this.worker.port.postMessage({
       action: "connected",
       payload: {
         newWindow: {
-          id: this.id,
-          windowState: this.currentWindowState,
+          id,
+          windowState,
         },
       },
     } satisfies WorkerMessage);
@@ -26,7 +22,6 @@ export class WorkerHandler {
       const message = event.data;
       switch (message.action) {
         case "sync":
-          this.currentWindowState = getCurrentWindowState();
           this.syncCallback(message.payload.allWindows);
           break;
         default:
@@ -37,17 +32,17 @@ export class WorkerHandler {
     window.addEventListener("beforeunload", () =>
       this.worker.port.postMessage({
         action: "closed",
-        payload: { id: this.id },
+        payload: { id },
       } satisfies WorkerMessage)
     );
   }
 
-  onWindowStateChange(newState: WindowState) {
+  onWindowStateChange(id: string, newState: WindowState) {
     this.worker.port.postMessage({
       action: "stateChanged",
       payload: {
         changedWindow: {
-          id: this.id,
+          id,
           windowState: newState,
         },
       },

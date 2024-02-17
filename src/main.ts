@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 import { drawCenterCircle, drawConnectingLine } from "./utils/drawing.utils";
 import {
   didWindowChange,
@@ -11,32 +13,31 @@ const main = () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   const ctx = canvas.getContext("2d")!;
+  const windowId = uuid();
+  let currentWindowState = getCurrentWindowState();
 
-  const workerHandler = new WorkerHandler();
+  const workerHandler = new WorkerHandler(windowId, currentWindowState);
 
   workerHandler.syncCallback = (windows) => {
     ctx.reset();
-    drawCenterCircle(ctx, getWindowCenter(workerHandler.currentWindowState));
+    drawCenterCircle(ctx, getWindowCenter(currentWindowState));
     windows
-      .filter(({ id }) => id !== workerHandler.id)
+      .filter(({ id }) => id !== windowId)
       .forEach(({ windowState }) => {
-        drawConnectingLine(ctx, workerHandler.currentWindowState, windowState);
+        drawConnectingLine(ctx, currentWindowState, windowState);
       });
   };
 
   setInterval(() => {
     const newState = getCurrentWindowState();
-    const windowChanged = didWindowChange(
-      workerHandler.currentWindowState,
-      newState
-    );
+    const windowChanged = didWindowChange(currentWindowState, newState);
     if (windowChanged.positionChanged || windowChanged.sizeChanged) {
       if (windowChanged.sizeChanged) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
-      workerHandler.currentWindowState = newState;
-      workerHandler.onWindowStateChange(newState);
+      currentWindowState = newState;
+      workerHandler.onWindowStateChange(windowId, newState);
     }
   }, 100);
 };
