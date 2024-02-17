@@ -17,7 +17,7 @@ export const drawCenterCircle = (
   ctx.closePath();
 };
 
-export const drawConnectingLine = (
+export const preprareDrawConnectingLine = (
   ctx: CanvasRenderingContext2D,
   currentWindowState: WindowState,
   targetWindowState: WindowState
@@ -31,11 +31,19 @@ export const drawConnectingLine = (
     targetCenter
   );
 
+  drawConnectingLine(ctx, originCenter, targetCenterRelativeToOrigin);
+};
+
+export const drawConnectingLine = (
+  ctx: CanvasRenderingContext2D,
+  originCenter: Coordinate,
+  targetRelativeCenter: Coordinate
+) => {
   ctx.strokeStyle = "#ff0000";
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(originCenter.x, originCenter.y);
-  ctx.lineTo(targetCenterRelativeToOrigin.x, targetCenterRelativeToOrigin.y);
+  ctx.lineTo(targetRelativeCenter.x, targetRelativeCenter.y);
   ctx.stroke();
   ctx.closePath();
 };

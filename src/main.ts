@@ -1,6 +1,9 @@
 import { v4 as uuid } from "uuid";
 
-import { drawCenterCircle, drawConnectingLine } from "./utils/drawing.utils";
+import {
+  drawCenterCircle,
+  preprareDrawConnectingLine,
+} from "./utils/drawing.utils";
 import {
   didWindowChange,
   getCurrentWindowState,
@@ -24,7 +27,7 @@ const main = () => {
     windows
       .filter(({ id }) => id !== windowId)
       .forEach(({ windowState }) => {
-        drawConnectingLine(ctx, currentWindowState, windowState);
+        preprareDrawConnectingLine(ctx, currentWindowState, windowState);
       });
   };
 
