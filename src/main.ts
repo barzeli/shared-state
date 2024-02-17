@@ -31,7 +31,7 @@ const main = () => {
   setInterval(() => {
     const newState = getCurrentWindowState();
     const windowChanged = didWindowChange(currentWindowState, newState);
-    if (windowChanged.positionChanged || windowChanged.sizeChanged) {
+    if (windowChanged.offsetChanged || windowChanged.sizeChanged) {
       if (windowChanged.sizeChanged) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;

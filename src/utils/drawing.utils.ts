@@ -2,6 +2,7 @@ import { Coordinate, WindowState } from "../types/window-state.types";
 import {
   getTargetCenterRelativeToOrigin,
   getWindowCenter,
+  getWindowOffset,
 } from "./window-state.utils";
 
 export const drawCenterCircle = (
@@ -25,8 +26,8 @@ export const drawConnectingLine = (
   const targetCenter = getWindowCenter(targetWindowState);
 
   const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
-    { x: currentWindowState.screenX, y: currentWindowState.screenY },
-    { x: targetWindowState.screenX, y: targetWindowState.screenY },
+    getWindowOffset(currentWindowState),
+    getWindowOffset(targetWindowState),
     targetCenter
   );
 

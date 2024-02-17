@@ -7,6 +7,11 @@ export const getCurrentWindowState = (): WindowState => ({
   height: window.innerHeight,
 });
 
+export const getWindowOffset = (windowState: WindowState): Coordinate => ({
+  x: windowState.screenX,
+  y: windowState.screenY,
+});
+
 export const getWindowCenter = (windowState: WindowState): Coordinate => ({
   x: windowState.width / 2,
   y: windowState.height / 2,
@@ -16,7 +21,7 @@ export const didWindowChange = (
   currentState: WindowState,
   newState: WindowState
 ) => ({
-  positionChanged:
+  offsetChanged:
     newState.screenX !== currentState.screenX ||
     newState.screenY !== currentState.screenY,
   sizeChanged:
