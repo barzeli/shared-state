@@ -59,7 +59,7 @@ const main = () => {
       currentWindowState = newState;
       workerHandler.onWindowStateChange(windowId, newState);
     }
-  }, 100);
+  }, 10);
 };
 
 main();
