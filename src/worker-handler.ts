@@ -5,7 +5,7 @@ import { SyncCallback, WorkerMessage } from "./types/worker.types";
 
 export class WorkerHandler {
   id = uuid();
-  syncCallbacks: SyncCallback[] = [];
+  syncCallback: SyncCallback;
   currentWindow = getCurrentWindowState();
   worker: SharedWorker;
   windows: Window[] = [];
@@ -29,9 +29,7 @@ export class WorkerHandler {
         case "sync":
           this.currentWindow = getCurrentWindowState();
           this.windows = message.payload.allWindows;
-          this.syncCallbacks.forEach((syncCallback) =>
-            syncCallback(this.windows)
-          );
+          this.syncCallback(this.windows);
           break;
         default:
           break;
@@ -44,10 +42,6 @@ export class WorkerHandler {
         payload: { id: this.id },
       } satisfies WorkerMessage)
     );
-  }
-
-  onSync(callback: SyncCallback) {
-    this.syncCallbacks.push(callback);
   }
 
   onWindowStateChange(newState: WindowState) {

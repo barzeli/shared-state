@@ -14,7 +14,7 @@ const main = () => {
 
   const workerHandler = new WorkerHandler();
 
-  workerHandler.onSync((windows) => {
+  workerHandler.syncCallback = (windows) => {
     ctx.reset();
     drawCenterCircle(ctx, getWindowCenter(workerHandler.currentWindow));
     windows
@@ -22,7 +22,7 @@ const main = () => {
       .forEach(({ windowState }) => {
         drawConnectingLine(ctx, workerHandler.currentWindow, windowState);
       });
-  });
+  };
 
   setInterval(() => {
     const newState = getCurrentWindowState();
