@@ -6,9 +6,9 @@ type Message<Action extends string, Payload extends unknown> = {
 };
 
 export type WorkerMessage =
-  | Message<"connected", { id: string; windowState: WindowState }>
+  | Message<"connected", { newWindow: Window }>
+  | Message<"stateChanged", { changedWindow: Window }>
   | Message<"sync", { allWindows: Window[] }>
-  | Message<"closed", { id: string }>
-  | Message<"stateChanged", { id: string; newState: WindowState }>;
+  | Message<"closed", { id: string }>;
 
 export type SyncCallback = (allWindows: Window[]) => void;

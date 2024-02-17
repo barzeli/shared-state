@@ -24,13 +24,13 @@ onconnect = ({ ports }) => {
     const message = event.data;
     switch (message.action) {
       case "connected":
-        windows.push({ ...message.payload, port });
+        windows.push({ ...message.payload.newWindow, port });
         syncAllWindows();
         break;
       case "stateChanged":
-        const { id: changedId, newState } = message.payload;
+        const { id: changedId, windowState } = message.payload.changedWindow;
         const oldWindowIndex = windows.findIndex(({ id }) => id === changedId);
-        windows[oldWindowIndex].windowState = newState;
+        windows[oldWindowIndex].windowState = windowState;
         syncAllWindows();
         break;
       case "closed":

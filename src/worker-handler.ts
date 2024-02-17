@@ -16,8 +16,10 @@ export class WorkerHandler {
     this.worker.port.postMessage({
       action: "connected",
       payload: {
-        id: this.id,
-        windowState: this.currentWindow,
+        newWindow: {
+          id: this.id,
+          windowState: this.currentWindow,
+        },
       },
     } satisfies WorkerMessage);
 
@@ -52,8 +54,10 @@ export class WorkerHandler {
     this.worker.port.postMessage({
       action: "stateChanged",
       payload: {
-        id: this.id,
-        newState,
+        changedWindow: {
+          id: this.id,
+          windowState: newState,
+        },
       },
     } satisfies WorkerMessage);
   }
