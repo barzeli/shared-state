@@ -1,17 +1,17 @@
 import { Window } from "./types/window-state.types";
 import { WorkerMessage } from "./types/worker.types";
 
-let windows: (Window & { port: MessagePort })[] = [];
+const windows: Record<string, Window & { port: MessagePort }> = {};
 
 onconnect = ({ ports }) => {
   const port = ports[0];
 
   const syncAllWindows = () => {
-    windows.forEach((window) => {
+    Object.values(windows).forEach((window) => {
       window.port.postMessage({
         action: "sync",
         payload: {
-          allWindows: windows.map(({ id, windowState }) => ({
+          allWindows: Object.values(windows).map(({ id, windowState }) => ({
             id,
             windowState,
           })),
@@ -24,17 +24,17 @@ onconnect = ({ ports }) => {
     const message = event.data;
     switch (message.action) {
       case "connected":
-        windows.push({ ...message.payload.newWindow, port });
+        const newWindow = message.payload.newWindow;
+        windows[newWindow.id] = { ...newWindow, port };
         syncAllWindows();
         break;
       case "stateChanged":
-        const { id: changedId, windowState } = message.payload.changedWindow;
-        const oldWindowIndex = windows.findIndex(({ id }) => id === changedId);
-        windows[oldWindowIndex].windowState = windowState;
+        const { id, windowState } = message.payload.changedWindow;
+        windows[id].windowState = windowState;
         syncAllWindows();
         break;
       case "closed":
-        windows = windows.filter((window) => window.id !== message.payload.id);
+        delete windows[message.payload.id];
         syncAllWindows();
         break;
       default:
