@@ -9,6 +9,7 @@ import {
   getWindowOffset,
 } from "./utils/window-state.utils";
 import { WorkerHandler } from "./worker-handler";
+import { pairArray } from "./utils/array.utils";
 
 const main = () => {
   const canvas = document.querySelector<HTMLCanvasElement>("#canvas")!;
@@ -23,21 +24,28 @@ const main = () => {
   workerHandler.syncCallback = (windows) => {
     ctx.reset();
     drawCenterCircle(ctx, getWindowCenter(currentWindowState));
-    windows
+    const windowsRelativeCenters = windows
       .filter(({ id }) => id !== windowId)
-      .forEach(({ windowState }) => {
-        const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
+      .map(({ windowState }) =>
+        getTargetCenterRelativeToOrigin(
           getWindowOffset(currentWindowState),
           getWindowOffset(windowState),
           getWindowCenter(windowState)
-        );
+        )
+      );
 
-        drawConnectingLine(
-          ctx,
-          getWindowCenter(currentWindowState),
-          targetCenterRelativeToOrigin
-        );
-      });
+    windowsRelativeCenters.forEach((targetCenterRelativeToOrigin) => {
+      drawCenterCircle(ctx, targetCenterRelativeToOrigin);
+      drawConnectingLine(
+        ctx,
+        getWindowCenter(currentWindowState),
+        targetCenterRelativeToOrigin
+      );
+    });
+
+    pairArray(windowsRelativeCenters).forEach(([originCenter, targetCenter]) =>
+      drawConnectingLine(ctx, originCenter, targetCenter)
+    );
   };
 
   setInterval(() => {
@@ -51,7 +59,7 @@ const main = () => {
       currentWindowState = newState;
       workerHandler.onWindowStateChange(windowId, newState);
     }
-  }, 100);
+  }, 10);
 };
 
 main();
