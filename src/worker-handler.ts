@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { Window, WindowState } from "./types/window-state.types";
+import { WindowState } from "./types/window-state.types";
 import { getCurrentWindowState } from "./utils/window-state.utils";
 import { SyncCallback, WorkerMessage } from "./types/worker.types";
 

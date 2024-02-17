@@ -1,4 +1,4 @@
-export type Coordinates = {
+export type Coordinate = {
   x: number;
   y: number;
 };

@@ -1,4 +1,4 @@
-import { Coordinates, WindowState } from "../types/window-state.types";
+import { Coordinate, WindowState } from "../types/window-state.types";
 import {
   getTargetCenterRelativeToOrigin,
   getWindowCenter,
@@ -6,7 +6,7 @@ import {
 
 export const drawCenterCircle = (
   ctx: CanvasRenderingContext2D,
-  center: Coordinates
+  center: Coordinate
 ) => {
   ctx.strokeStyle = "#eeeeee";
   ctx.lineWidth = 10;
@@ -24,21 +24,11 @@ export const drawConnectingLine = (
   const originCenter = getWindowCenter(currentWindowState);
   const targetCenter = getWindowCenter(targetWindowState);
 
-  const currentWindowOffset: Coordinates = {
-    x: currentWindowState.screenX,
-    y: currentWindowState.screenY,
-  };
-
-  const targetWindowOffset: Coordinates = {
-    x: targetWindowState.screenX,
-    y: targetWindowState.screenY,
-  };
-
-  const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin({
-    currentWindowOffset,
-    targetWindowOffset,
-    targetCenter,
-  });
+  const targetCenterRelativeToOrigin = getTargetCenterRelativeToOrigin(
+    { x: currentWindowState.screenX, y: currentWindowState.screenY },
+    { x: targetWindowState.screenX, y: targetWindowState.screenY },
+    targetCenter
+  );
 
   ctx.strokeStyle = "#ff0000";
   ctx.lineCap = "round";

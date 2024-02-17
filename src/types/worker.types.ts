@@ -1,4 +1,4 @@
-import { Window, WindowState } from "./window-state.types";
+import { Window } from "./window-state.types";
 
 type Message<Action extends string, Payload extends unknown> = {
   action: Action;

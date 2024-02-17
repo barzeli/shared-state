@@ -1,4 +1,16 @@
-import { Coordinates, WindowState } from "../types/window-state.types";
+import { Coordinate, WindowState } from "../types/window-state.types";
+
+export const getCurrentWindowState = (): WindowState => ({
+  screenX: window.screenX,
+  screenY: window.screenY,
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
+
+export const getWindowCenter = (windowState: WindowState): Coordinate => ({
+  x: windowState.width / 2,
+  y: windowState.height / 2,
+});
 
 export const didWindowChange = (
   currentState: WindowState,
@@ -12,15 +24,11 @@ export const didWindowChange = (
     newState.height !== currentState.height,
 });
 
-export const getTargetCenterRelativeToOrigin = ({
-  currentWindowOffset,
-  targetWindowOffset,
-  targetCenter,
-}: {
-  currentWindowOffset: Coordinates;
-  targetWindowOffset: Coordinates;
-  targetCenter: Coordinates;
-}) => {
+export const getTargetCenterRelativeToOrigin = (
+  currentWindowOffset: Coordinate,
+  targetWindowOffset: Coordinate,
+  targetCenter: Coordinate
+) => {
   const targetAbsoluteCenter = {
     x: targetWindowOffset.x + targetCenter.x,
     y: targetWindowOffset.y + targetCenter.y,
@@ -33,15 +41,3 @@ export const getTargetCenterRelativeToOrigin = ({
 
   return targetCenterRelativeToOrigin;
 };
-
-export const getCurrentWindowState = (): WindowState => ({
-  screenX: window.screenX,
-  screenY: window.screenY,
-  width: window.innerWidth,
-  height: window.innerHeight,
-});
-
-export const getWindowCenter = (windowState: WindowState): Coordinates => ({
-  x: windowState.width / 2,
-  y: windowState.height / 2,
-});
