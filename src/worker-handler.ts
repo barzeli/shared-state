@@ -6,7 +6,7 @@ import { SyncCallback, WorkerMessage } from "./types/worker.types";
 export class WorkerHandler {
   id = uuid();
   syncCallback: SyncCallback;
-  currentWindow = getCurrentWindowState();
+  currentWindowState = getCurrentWindowState();
   worker: SharedWorker;
 
   constructor() {
@@ -17,7 +17,7 @@ export class WorkerHandler {
       payload: {
         newWindow: {
           id: this.id,
-          windowState: this.currentWindow,
+          windowState: this.currentWindowState,
         },
       },
     } satisfies WorkerMessage);
@@ -26,7 +26,7 @@ export class WorkerHandler {
       const message = event.data;
       switch (message.action) {
         case "sync":
-          this.currentWindow = getCurrentWindowState();
+          this.currentWindowState = getCurrentWindowState();
           this.syncCallback(message.payload.allWindows);
           break;
         default:

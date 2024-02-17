@@ -16,18 +16,18 @@ const main = () => {
 
   workerHandler.syncCallback = (windows) => {
     ctx.reset();
-    drawCenterCircle(ctx, getWindowCenter(workerHandler.currentWindow));
+    drawCenterCircle(ctx, getWindowCenter(workerHandler.currentWindowState));
     windows
       .filter(({ id }) => id !== workerHandler.id)
       .forEach(({ windowState }) => {
-        drawConnectingLine(ctx, workerHandler.currentWindow, windowState);
+        drawConnectingLine(ctx, workerHandler.currentWindowState, windowState);
       });
   };
 
   setInterval(() => {
     const newState = getCurrentWindowState();
     const windowChanged = didWindowChange(
-      workerHandler.currentWindow,
+      workerHandler.currentWindowState,
       newState
     );
     if (windowChanged.positionChanged || windowChanged.sizeChanged) {
@@ -35,7 +35,7 @@ const main = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
-      workerHandler.currentWindow = newState;
+      workerHandler.currentWindowState = newState;
       workerHandler.onWindowStateChange(newState);
     }
   }, 100);
